@@ -2,7 +2,7 @@
 
 In this portion of the workshop, we will take a fastq file containing PacBio HiFi reads and, first, use [`KMC`](https://github.com/refresh-bio/KMC) to count kmers and then use [`GenomeScope 2`](http://genomescope.org/genomescope2.0/) to estimate genome size, heterozygosity, and repeat content from the kmers.
 
-The default raw data format from the PacBio revio is a `bam` file that contains the HiFi reads. Most of the downstream software works with `FASTQ` file, so we will use a `FASTQ` file that I have already made for you. You can find this at `~/fsl_groups/fslg_nanopore/nobackup/archive/genomics_workshop_byu_may_24/m54336U_230309_163624.hifi_reads.fastq.gz`.
+The default raw data format from the PacBio revio is a `bam` file that contains the HiFi reads. Most of the downstream software works with `FASTQ` file, so we will use a `FASTQ` file that I have already made for you. You can find this at `/grphome/fslg_nanopore/nobackup/archive/genomics_workshop_byu_may_24/m54336U_230309_163624.hifi_reads.fastq.gz`.
 
 Note: if you want to convert your `bam` file to a `fastq` file, there are multiple ways to do this, but I often use [`bedtools`](https://bedtools.readthedocs.io/en/latest/). A command that you can use to do this with bedtools is:
 
@@ -28,7 +28,7 @@ First, navigate to your `~/nobackup/autodelete` directory. On the BYU supercompu
 
 Then you'll want to copy the `fastq.gz` file from the caddisfly, _Arctopsyche grandis_ into your directory. You can simply do this with:
 ```
-$ cp ~/fsl_groups/fslg_nanopore/nobackup/archive/genomics_workshop_byu_may_24/m54336U_230309_163624.hifi_reads.fastq.gz .
+$ cp /grphome/fslg_nanopore/nobackup/archive/genomics_workshop_byu_may_24/m54336U_230309_163624.hifi_reads.fastq.gz .
 ```
 
 Remember to include the `.`. That is indicates that you want the file destination to be your current working directory. Now, make a new file called `files.txt` that contains the names of all of the files that you want to assess. In this case, we only have a single `FASTQ` file, but you could be using multiple sequencing runs and could add those all to your `files.txt` file. You can create this file with:
