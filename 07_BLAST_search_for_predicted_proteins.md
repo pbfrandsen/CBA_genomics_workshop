@@ -1,4 +1,4 @@
-# 08 BLAST search for predicted proteins
+#BLAST search for predicted proteins
 
 Now that you have a set of predicted proteins, there should be an output from `BRAKER3` called `braker.aa`. This contains the predicted peptides from you feature annotation. If you wanted to assign functional annotations to these proteins with, e.g. `BLAST2GO`, then you will first need to search the proteins with `BLAST`.
 
