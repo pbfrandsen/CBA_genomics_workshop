@@ -1,5 +1,7 @@
 # CBA workshop
-materials for CBA genomics workshop
+Materials for CBA genomics workshop
+
+[0. Introduction to the Super Computer](https://github.com/pbfrandsen/CBA_genomics_workshop/blob/main/00_Introduction_to_the_Supercomputer.md)
 
 [1. kmer counting and GenomeScope 2](https://github.com/pbfrandsen/CBA_genomics_workshop/blob/main/01_kmer_counting_genomescope.md)
 
