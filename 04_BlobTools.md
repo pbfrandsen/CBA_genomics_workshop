@@ -2,7 +2,7 @@
 
 [BlobTools](https://github.com/DRL/blobtools) combines the read-depth, GC content, and closest taxonomic match of each contig to identify likely contaminants. Full documentation can be found [here](https://blobtools.readme.io/docs/what-is-blobtools).
 
-Note: The Blast and Minimap2 steps can run independently of each other, so go ahead and get both of those running. Blasting all of the contigs may take anywhere from several hours to a few days depending on the size of the genome. Feel free to look through the rest of the steps and explore some of the example ouputs found in `fsl_groups/fslg_nanopore/nobackup/archive/genomics_workshop_byu_may_24/blobtools`
+Note: The Blast and Minimap2 steps can run independently of each other, so go ahead and get both of those running. Using `BLAST` to search all of the contigs may take anywhere from several hours to a few days depending on the size of the genome. Feel free to look through the rest of the steps and explore some of the example ouputs found in `/grphome/fslg_nanopore/nobackup/archive/genomics_workshop_byu_may_24/blobtools`
 
 First, let's make a directory for our output:
 ````bash
@@ -15,6 +15,7 @@ Create a job script to blast each contig of the genome against the nucleotide (n
 nano blast_contigs.job
 ````
 Copy the script below into your the file. Make sure to edit it to include your own email and file paths.
+
 ````bash
 #!/bin/bash
 
@@ -50,6 +51,7 @@ blastn \
 
 
 Explantion of inputs:
+
 ````
 -db: ncbi nucleotide database
 -query: input file (FASTA)
@@ -60,23 +62,29 @@ Explantion of inputs:
 -out: name of the output file
 ````
 Start the job by running:
-````bash
+
+```bash
 sbatch blast_contigs.job
-````
+```
+
 This job can take a few days to run.
+
 ## Minimap2
 BlobTools will use the alignment data from Minimap2 to calculate the sequencing coverage for each contig. 
 You can download the precompiled binary for Minimap2 into your blobtools directory by running the following:
-````bash
+
+```bash
 curl -L https://github.com/lh3/minimap2/releases/download/v2.28/minimap2-2.28_x64-linux.tar.bz2 | tar -jxvf -
-````
+```
 
 Next, create a job script to map the reads to the genome:
-````bash
+```bash
 nano map_contigs.job
-````
+```
+
 Copy the script below into the file. Make sure to edit it to include your own email and file paths.
-````bash
+
+```bash
 #!/bin/bash
 
 #SBATCH --time=15:00:00   # walltime

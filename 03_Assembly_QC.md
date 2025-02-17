@@ -16,10 +16,10 @@ conda activate quast
 Then we can simply run quast on the assembly file. It is pretty fast so we can run it interactively and won't need to put it into a job file.
 
 ```
-quast <assembly_name>.p_ctg.fasta
+quast <assembly_name>.bp.p_ctg.fasta
 ```
 
-Now it will run on your genome and the results will be added to `quast_results/latest`. Once your run is complete, you can navigate to that folder. There should be a file called `report.pdf`. Go ahead and download that file with `scp` and examine it's contents.
+Now, `QUAST`, will evaluate your genome assembly and the results will be added to `quast_results/latest`. Once your run is complete, you can navigate to that folder. There should be a file called `report.pdf`. Go ahead and download that file with `scp` and examine it's contents.
 
 ### compleasm
 

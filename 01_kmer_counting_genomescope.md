@@ -57,7 +57,7 @@ $ sbatch kmc.job
 
 This should complete in about 15 minutes, but may vary depending on how busy the cluster is. We can take a little break. If your job is still not running, then you can go ahead and copy the `reads.histo` file that I already made to take into `GenomeScope2`. It is in:
 
-`~/fsl_groups/fslg_nanopore/nobackup/archive/genomics_workshop_byu_may_24/reads.histo`.
+`/grphome/fslg_nanopore/nobackup/archive/genomics_workshop_byu_may_24/reads.histo`.
 
 This is a good time to practice copying files over (with `cp`) and/or downloading files (I like to use `scp`).
 
