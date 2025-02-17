@@ -65,7 +65,7 @@ There are a lot of optional parameters to include in Earl Grey, we're only inclu
 Earl Grey usually runs for 1-3 days, depending on the size and complexity of the genome. While your job is running we're going to look at output files from a completed run. Copy over the Earl Grey output files from the shared directory:
 
 ```bash
-cp -r /home/youruserid/fsl_groups/fslg_nanopore/nobackup/archive/genomics_workshop_byu_may_24/ .
+cp -r /grphome/fsl_groups/fslg_nanopore/nobackup/archive/genomics_workshop_byu_may_24/ .
 ```
 
 Move into the `*summaryFiles` directory using `cd`. You'll see there are several files there, including two pdfs. Download the .pdf files to your computer. Which transposable element is found in highest frequency? Have there been any recent shifts in transposable element activity?

@@ -13,13 +13,13 @@ We already have the above files prepared. However, when running BRAKER3 on your 
 Here is the softmasked genome:
 
 ```bash
-cp ~/fsl_groups/fslg_nanopore/nobackup/archive/genomics_workshop_byu_may_24/arcto_4_HiC_chrom_EarlGrey/arcto_4_HiC_chrom_summaryFiles/arcto_4_HiC_chrom.softmasked.fasta .
+cp /grphome/fslg_nanopore/nobackup/archive/genomics_workshop_byu_may_24/arcto_4_HiC_chrom_EarlGrey/arcto_4_HiC_chrom_summaryFiles/arcto_4_HiC_chrom.softmasked.fasta .
 ```
 
 Here is the protein database folder and RNASeq data:
 
 ```bash
-cp ~/fsl_groups/fslg_nanopore/nobackup/archive/genomics_workshop_byu_may_24/braker-files/* .
+cp /grphome/fslg_nanopore/nobackup/archive/genomics_workshop_byu_may_24/braker-files/* .
 ```
 
 BRAKER doesn't work well with long fasta header names. Check your masked reference genome and confirm that there are no spaces, special symbols, or long names with grep:
@@ -69,7 +69,7 @@ export BRAKER_SIF=<file_path_to.sif_file>
 We need to download a config folder from AUGUSTUS to our own directory to make it writable for BRAKER. I already downloaded the config folder, you can copy it to your own directory: 
 
 ```bash
-cp -r ~/fsl_groups/fslg_nanopore/nobackup/archive/genomics_workshop_byu_may_24/config/ .
+cp -r /grphome/fslg_nanopore/nobackup/archive/genomics_workshop_byu_may_24/config/ .
 ```
 
 Now we'll download three test files to confirm BRAKER is running correctly:

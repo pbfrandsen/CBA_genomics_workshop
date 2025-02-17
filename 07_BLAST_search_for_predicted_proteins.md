@@ -5,7 +5,7 @@ Now that you have a set of predicted proteins, there should be an output from `B
 Copy that file to your directory. You can either use your own file or the one with predicted proteins from `BRAKER`. Go ahead and make a new folder, maybe called `protein_blast` and copy the file from this path:
 
 ```
-~/fsl_groups/fslg_nanopore/nobackup/archive/genomics_workshop_byu_may_24/arctopsyche-braker.aa
+/grphome/fslg_nanopore/nobackup/archive/genomics_workshop_byu_may_24/arctopsyche-braker.aa
 ```
 
 To run `BLAST` across all 12,000 predicted proteins in a timely fashion, we will first split up the protein file into many files that we will run with a supercomputer array. First make a new directory called `fa` to contain the new fasta files.
