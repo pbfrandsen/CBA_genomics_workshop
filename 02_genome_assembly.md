@@ -1,6 +1,6 @@
 # 02: Whole Genome Assembly
 
-[Hifiasm](https://github.com/chhylp123/hifiasm) is a tool for assembling genomes, especially for PacBio HiFi reads. It is available in `bioconda`, but also as source code that you can download and build if you so desire. There are a few different options that you can explore at the [hifiasm GitHub](https://github.com/chhylp123/hifiasm) if you feel so inclined. It is always good to become familiar with the various options.
+[Hifiasm](https://github.com/chhylp123/hifiasm) is a tool for assembling genomes. It was originally developed for PacBio HiFi reads, but has since been updated for the most recent Oxford Nanopore pores/chemistry. It is available in `bioconda`, but also as source code that you can download and build if you so desire. There are a few different options that you can explore at the [hifiasm GitHub](https://github.com/chhylp123/hifiasm) if you feel so inclined. It is always good to become familiar with the various options.
 
 We'll run `hifiasm` as a batch job (i.e., a task submitted to the supercomputer).  
 
@@ -51,7 +51,7 @@ awk '$1 ~/S/ {print ">"$2"\n"$3}' $1.asm.bp.hap1.p_ctg.gfa > $1.asm.bp.hap1.p_ct
 awk '$1 ~/S/ {print ">"$2"\n"$3}' $1.asm.bp.hap2.p_ctg.gfa > $1.asm.bp.hap2.p_ctg.fasta
 ```
 
- The '-t' determines the number of CPUs or processor cores, and the '-o' indicates the output file prefix. 
+ The `-t` determines the number of CPUs or processor cores, and the `-o` indicates the output file prefix. 
 
 The values that begin with `$` are argument or input you'll provide when submitting your job. In this case, we'll use `$1` to indicate the prefix of what you want to call the assembly and `$2` to indicate the read `FASTQ` file. 
 

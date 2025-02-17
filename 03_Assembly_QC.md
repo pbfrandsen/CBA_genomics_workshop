@@ -4,7 +4,7 @@ Now that we have a whole genome assembly, we're going to do some quick checks to
 
 ### QUAST
 
-First, make sure that your assembly file was written appropriately from `hifiasm`. In the last lab, we converted three files from `gfa` format to `fasta` format. The one that we will use from here on is the one that ends in `p_ctg.fasta`. This is the `primary` assembly. Perhaps sometime soon, we'll have more tools that work directly on genome graphs that include the haplotypic diversity in the genome, but most tools currently work with a single fasta file representation of the genome.
+First, make sure that your assembly file was written appropriately from `hifiasm`. In the last lab, we converted three files from `gfa` format to `fasta` format. The one that we will use from here on is the one that ends in `bp.p_ctg.fasta`. This is the `primary` assembly. Perhaps sometime soon, we'll have more tools that work directly on genome graphs that include the haplotypic diversity in the genome, but most tools currently work with a single fasta file representation of the genome.
 
 Next, we'll go ahead and run `QUAST` on that assembly file. First, load the `conda` module and then activate the `QUAST` environment.
 
@@ -41,7 +41,7 @@ conda activate compleasm
 compleasm run -a <path to assembly> -o compleasm -t $SLURM_NTASKS -l insecta -L mb_downloads -m busco
 ```
 
-Note, that you should substitute your particular genome assembly file for "arctopsyche.p_ctg.fasta". Note, we are using the `insecta_odb10` dataset. For some taxa, there are more specific datasets that you could use. For example, there is a `lepidoptera_odb10` dataset and for holometabolous insects, there is a `endoptergyota_odb10` dataset.
+Note, that you should substitute your particular genome assembly file for "arctopsyche.bp.p_ctg.fasta". Note, we are using the `insecta_odb10` dataset. For some taxa, there are more specific datasets that you could use. For example, there is a `lepidoptera_odb10` dataset and for holometabolous insects, there is a `endoptergyota_odb10` dataset.
 
 ### tidk
 
@@ -54,15 +54,15 @@ source /grphome/fslg_pws472/.bashrc
 conda activate tidk
 ```
 
-Next, we're going to search for telomere sequences, using clade-specific telomere sequences. If you are using the sample data, this will be `Trichoptera`. However, I know some of you are analyzing other genomes and you might be able to find the clade in the documentation for [`tidk`](https://github.com/tolkit/telomeric-identifier). I know there are clade specific sets for `Lepidoptera`, `Hymenoptera`, and `Plecoptera`. If your clade isn't listed, you can try the closest related clade, or, alternatively, try to find the telomere sequence from an earlier publication and use `tidk search` instead of `tidk find`.
+Next, we're going to search for telomere sequences, using clade-specific telomere sequences. If you are using the sample data, this will be `Trichoptera`. However, if, in the future, you analyze a different species, you might be able to find the clade in the documentation for [`tidk`](https://github.com/tolkit/telomeric-identifier). I know there are clade specific sets for `Lepidoptera`, `Hymenoptera`, and `Plecoptera`. If your clade isn't listed, you can try the closest related clade, or, alternatively, try to find the telomere sequence from an earlier publication and use `tidk search` instead of `tidk find`.
 
 `tidk` is pretty fast so you can just run it interactively. Here is an example command:
 
 ```
-tidk find -c Trichoptera -o arcto_tidk -d tidk_results arctopsyche.asm.p_ctg.fasta
+tidk find -c Trichoptera -o arcto_tidk -d tidk_results arctopsyche.asm.bp.p_ctg.fasta
 ```
 
-After the finding it finished, you can then make plots with:
+After telomere finding is complete, you can then make plots with:
 
 ```
 tidk plot -t tidk_results/arcto_tidk_telomeric_repeat_windows.tsv

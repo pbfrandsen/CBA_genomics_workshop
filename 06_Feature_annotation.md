@@ -1,6 +1,8 @@
-# BRAKER3
+# Feature annotation with BRAKER3
 ###### Last updated: January 29, 2025
 ------------------------------------------------------------------------
+
+Note--instead of using BRAKER3, we will be performing feature annotation with a new deep learning based method called `Helixer`. However, I am leaving these instructions here since they can be useful for the future and for making comparisons between our genomes.
 
 ## Prerequisites: 
 
