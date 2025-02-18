@@ -26,7 +26,7 @@ Copy the script below into your the file. Make sure to edit it to include your o
 #SBATCH --nodes=1   # number of nodes
 #SBATCH --mem-per-cpu=21240M   # memory per CPU core
 #SBATCH -J "BlobTools blast"   # job name
-#SBATCH --mail-user=[youremail@email.com]   # email address
+#SBATCH --mail-user=<youremail@email.com>   # email address
 #SBATCH --mail-type=BEGIN
 #SBATCH --mail-type=END
 #SBATCH --mail-type=FAIL
@@ -42,13 +42,13 @@ conda activate blast
 blastn \
 -task megablast \
 -db /apps/blast/databases/nt \
--query [path to contigs] \
+-query <path_to_contigs> \
 -outfmt "6 qseqid staxids bitscore std" \
 -max_target_seqs 20 \
 -max_hsps 1 \
 -evalue 1e-20 \
 -num_threads $SLURM_NTASKS \
--out [genome_name].blast.out
+-out <genome_name>.blast.out
 ```
 
 
@@ -94,7 +94,7 @@ Copy the script below into the file. Make sure to edit it to include your own em
 #SBATCH --nodes=1   # number of nodes
 #SBATCH --mem-per-cpu=20144M   # memory per CPU core
 #SBATCH -J "BlobTools minimap2"   # job name
-#SBATCH --mail-user=[youremail@email.com]   # email address
+#SBATCH --mail-user=<youremail@email.com>   # email address
 #SBATCH --mail-type=BEGIN
 #SBATCH --mail-type=END
 #SBATCH --mail-type=FAIL
@@ -111,11 +111,11 @@ module load samtools
 ./minimap2-2.28_x64-linux/minimap2 \
 -ax map-hifi \
 -t $SLURM_NTASKS \
-[path to contigs] \
-[path to raw sequencing reads] \
-| samtools sort -@$SLURM_NTASKS -O BAM -o [genome name]_sorted.bam
+<path_to_contigs> \
+<path_to_raw_sequencing_reads> \
+| samtools sort -@$SLURM_NTASKS -O BAM -o <genome_name>_sorted.bam
 
-samtools index [genome name]_sorted.bam
+samtools index <genome_name>_sorted.bam
 ```
 
 Explanation of inputs:
@@ -158,7 +158,7 @@ Copy the script below into the file. Make sure to edit it to include your own em
 #SBATCH --nodes=1   # number of nodes
 #SBATCH --mem-per-cpu=12288M   # memory per CPU core
 #SBATCH -J "blobplots"   # job name
-#SBATCH --mail-user=[youremail@email.com]   # email address
+#SBATCH --mail-user=<youremail@email.com>   # email address
 #SBATCH --mail-type=BEGIN
 #SBATCH --mail-type=END
 #SBATCH --mail-type=FAIL
@@ -172,10 +172,10 @@ export OMP_NUM_THREADS=$SLURM_CPUS_ON_NODE
 source /grphome/fslg_pws472/.bashrc
 conda activate blobtools
 
-blobtools create -i [path to genome] \
--b [path to minimap2 output in BAM format] \
--t [path to blast output] \
--o [genome name]_blobplot
+blobtools create -i <path_to_genome_fasta> \
+-b <path to minimap2 output in BAM format> \
+-t <path to blast output> \
+-o <genome name>_blobplot
 ```
 Explanation of inputs:
 
@@ -198,13 +198,13 @@ sbatch blobDB.job
 source /grphome/fslg_pws472/.bashrc
 conda activate blobtools
 mkdir plots
-blobtools plot -i [genome name]_blobplot.blobDB.json -o plots/
+blobtools plot -i <genome name>_blobplot.blobDB.json -o plots/
 ```
 
 To view the PNG outputs, you will need to download them to your own computer. To do this, open up command prompt on your own machine and use the following command:
 
 ```
-scp [USERID]@ssh.rc.byu.edu:[path to blobtools folder]/plots/* [path to where you want to save these on your computer]
+scp [USERID]@ssh.rc.byu.edu:<path to blobtools folder>/plots/* <path to where you want to save these on your computer>
 ```
 
 You will then need to enter you password and a verification code for the files to copy over. Open up the PNGs to view possible contaminant contigs.
@@ -214,7 +214,7 @@ You will then need to enter you password and a verification code for the files t
 Create a table view of the json database. You can choose the taxonomic level that will work best for filtering out contaminants. The availale options are listed in the explanation of the inputs.
 
 ```
-blobtools view -i [blobDB in json format] -r [desired taxonomic level]
+blobtools view -i <blobDB in json format> -r <desired taxonomic level>
 ```
 
 Explanation of inputs:
@@ -230,18 +230,18 @@ Explanation of inputs:
 
 We can now filter through the table to identify which contigs are likely contaminants. Choose the taxon your organism *does* belong to (at whatever taxonomic level you chose when creating the table).
 ````bash
-grep -v [DESIRED_TAXON] [blobDB ending in .table.txt]
+grep -v <DESIRED_TAXON> <blobDB ending in .table.txt>
 ````
 The -v option inverts the grep results so that rows *with* the taxon are *excluded*. This leaves you with a list of contanimant contigs. To isolate just the contig names, do the following:
 
 ```
-grep -v [DESIRED_TAXON] [blobDB ending in .table.txt] | awk '{print $1}' > contaminant_contigs.txt
+grep -v <DESIRED_TAXON> <blobDB ending in .table.txt> | awk '{print $1}' > contaminant_contigs.txt
 ```
 
 BlobTools has a built-in module called **seqfilter** to filter your genome based on a list like this.
 
 ```
-blobtools seqfilter -i [genome_name].fasta -l contaminant_contigs.txt -v
+blobtools seqfilter -i <genome_name>.fasta -l contaminant_contigs.txt -v
 ```
 
 Explanation of inputs:
