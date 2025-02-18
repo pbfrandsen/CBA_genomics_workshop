@@ -186,6 +186,12 @@ Explanation of inputs:
 -o: path and/or name of the blobtools database.
 ```
 
+You can submit this job with:
+
+```
+sbatch blobDB.job
+```
+
 ### Making the plots
 
 ```
