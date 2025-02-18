@@ -45,6 +45,12 @@ compleasm run -a <path to assembly> -o compleasm -t $SLURM_NTASKS -l insecta -L 
 
 Note, that you should substitute your particular genome assembly file for "arctopsyche.bp.p_ctg.fasta". Note, we are using the `insecta_odb10` dataset. For some taxa, there are more specific datasets that you could use. For example, there is a `lepidoptera_odb10` dataset and for holometabolous insects, there is a `endoptergyota_odb10` dataset.
 
+Go ahead and run `compleasm` with:
+
+```
+sbatch compleasm.job
+```
+
 ### tidk
 
 Another way to evaluate the quality of your genome assembly is to see how many contigs contain telomeres. With high-quality, long reads, we can often assemble whole chromosomes! You can verify this by the presence of telomere sequence at both ends of the contig. There is a nice tool developed by the Darwin Tree of Life team to do this called [`tidk`](https://github.com/tolkit/telomeric-identifier).
