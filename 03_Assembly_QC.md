@@ -2,6 +2,8 @@
 
 Now that we have a whole genome assembly, we're going to do some quick checks to see how it looks. The first thing that we will do is estimate the contig statistics with [`QUAST`](https://github.com/ablab/quast). Then we will run `compleasm` to get a handle on genome completeness.
 
+If your assembly is not complete, go ahead and copy over a completed assembly from `/nobackup/archive/grp/fslg_nanopore/genomics_workshop_byu_may_24/arctopsyche.asm.p_ctg.fasta`.
+
 ### QUAST
 
 First, make sure that your assembly file was written appropriately from `hifiasm`. In the last lab, we converted three files from `gfa` format to `fasta` format. The one that we will use from here on is the one that ends in `bp.p_ctg.fasta`. This is the `primary` assembly. Perhaps sometime soon, we'll have more tools that work directly on genome graphs that include the haplotypic diversity in the genome, but most tools currently work with a single fasta file representation of the genome.
