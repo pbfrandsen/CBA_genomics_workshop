@@ -27,7 +27,6 @@ nano earlgrey.job
 Copy and paste the job script below into your job file, editing it to match your file names, species and email.
 
 ```bash
-
 #!/bin/bash
 
 #SBATCH --time=72:00:00   # walltime
@@ -48,7 +47,7 @@ source /grphome/fslg_pws472/.bashrc
 conda activate earlgrey
 
 #run Earl Grey
-earlGrey -g <genome_name> -t $SLURM_NTASKS -s <species_name> -r arthropoda -d yes -o ../earl-out/
+earlGrey -g <genome_fasta> -t $SLURM_NTASKS -s <species_name> -r arthropoda -d yes -o earl-out/
 ```
 
 Start the job!
@@ -65,17 +64,9 @@ There are a lot of optional parameters to include in Earl Grey, we're only inclu
 Earl Grey usually runs for 1-3 days, depending on the size and complexity of the genome. While your job is running we're going to look at output files from a completed run. Copy over the Earl Grey output files from the shared directory:
 
 ```bash
-cp -r /grphome/fsl_groups/fslg_nanopore/nobackup/archive/genomics_workshop_byu_may_24/ .
+cp -r /grphome/fslg_nanopore/nobackup/archive/genomics_workshop_byu_may_24/arcto_4_HiC_chrom_EarlGrey/arcto_4_HiC_chrom_summaryFiles .
 ```
 
-Move into the `*summaryFiles` directory using `cd`. You'll see there are several files there, including two pdfs. Download the .pdf files to your computer. Which transposable element is found in highest frequency? Have there been any recent shifts in transposable element activity?
+Move into the `arcto_4_HiC_chrom_summaryFiles` directory using `cd`. You'll see there are several files there, including two pdfs. Download the .pdf files to your computer. Which transposable element is found in highest frequency? Have there been any recent shifts in transposable element activity?
 
-Check out the other files in the `*summaryFiles` folder using head. The `.gff` and `.bed` file provide coordinates and the contig name for each of the transposable elements. `*combined_library.fasta` has all of the transposable elements found in the genome. 
-
-Copy the .bed file into a new directory, we'll need it for the intersect analysis.
-
-```bash
-cp *.bed ~/nobackup/autodelete/
-```
-
-The hard-masked and soft-masked genomes are in a different folder. Move into `*RepeatMasker`. View the first few lines of each file using `head <filename>`. Which file is hard-masked? Which is soft-masked? 
+Check out the other files in the `arcto_4_HiC_chrom_summaryFiles` folder using head. The `.gff` and `.bed` file provide coordinates and the contig name for each of the transposable elements. `arcto_4_HiC_chrom_combined_library.fasta` has all of the transposable elements found in the genome. There is also a file called `arcto_4_HiC_chrom.softmasked.fasta` that contains the soft-masked genome. We will use this file in the feature annotation step.
