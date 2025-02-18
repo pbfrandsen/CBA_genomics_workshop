@@ -32,7 +32,7 @@ Then you'll want to copy the `fastq.gz` file from the caddisfly, _Arctopsyche gr
 $ cp /grphome/fslg_nanopore/nobackup/archive/genomics_workshop_byu_may_24/m54336U_230309_163624.hifi_reads.fastq.gz .
 ```
 
-Remember to include the `.`. That is indicates that you want the file destination to be your current working directory. Now, make a new file called `files.txt` that contains the names of all of the files that you want to assess. In this case, we only have a single `FASTQ` file, but you could be using multiple sequencing runs and could add those all to your `files.txt` file. You can create this file with:
+Remember to include the `.`. The `.` indicates that you want the file destination to be your current working directory. Now, make a new file called `files.txt` that contains the names of all of the files that you want to assess. In this case, we only have a single `FASTQ` file, but you could be using multiple sequencing runs and could add those all to your `files.txt` file. You can create this file with:
 
 `$ ls *fastq.gz > files.txt`
 
