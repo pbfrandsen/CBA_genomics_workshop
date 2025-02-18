@@ -138,7 +138,7 @@ bash test3.sh
 
 Now, go ahead and inspect the output. You can view the logs and also look in the directories for each test file.
 
-If that worked, we can now run BRAKER3 on our data! 
+If that worked, we are now preapred to run BRAKER3 on our data! We won't complete the steps below because the job takes 1-3 days. However, I will keep these steps available in the case you want to return and run these steps on your own data.
 
 First, make a new directory and copy over the orthoDB gene set:
 
@@ -196,14 +196,14 @@ It's important to understand what each of the above lines is doing.
 `--species` is a unique species identifier
 `--AUGUSTUS_CONFIG_PATH` is the file path to the config directory that we copied above
 
-## Examining the output:
+### Examining the output:
 
-We're just going to quickly look at some stats to see how the different gene annotations compare. To do this we'll copy a script from GALBA:
+Once the job is finished, you can take a quick look at some stats to see how the different gene annotations performed within `BRAKER3` compare. To do this you can use a script from GALBA:
 
 ```bash
 wget https://raw.githubusercontent.com/Gaius-Augustus/GALBA/master/scripts/analyze_exons.py
 chmod u+x analyze_exons.py
-./analyze_exons.py -f arcto-grandis/braker.gtf
-./analyze_exons.py -f arcto-grandis/Augustus/augustus.hints.gtf
-./analyze_exons.py -f arcto-grandis/GeneMark-ETP/genemark.gtf
+./analyze_exons.py -f arcto_grandis_annot/braker.gtf
+./analyze_exons.py -f arcto_grandis_annot/Augustus/augustus.hints.gtf
+./analyze_exons.py -f arcto_grandis_annot/GeneMark-ETP/genemark.gtf
 ```
