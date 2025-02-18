@@ -2,8 +2,6 @@
 ###### Last updated: January 29, 2025
 ------------------------------------------------------------------------
 
-Note--instead of using BRAKER3, we will be performing feature annotation with a new deep learning based method called `Helixer`. However, I am leaving these instructions here since they can be useful for the future and for making comparisons between our genomes.
-
 ## Prerequisites: 
 
 - Soft-masked reference genome (you can use RepeatMasker and RepeatModeler, we used Earl Grey)
@@ -47,9 +45,9 @@ Now index the reference genome with hisat2-build, and then map the index to the 
 
 ```bash
 # Index the reference genome:
-hisat2-build <masked-reference> <species-code>
+hisat2-build arcto_4_HiC_chrom.softmasked.fasta arcto
 # Map index to .fastq files:
-hisat2 -x <species-code> -1 <RNASeq-dataset-1.fastq> -2 <RNASeq-dataset-2.fastq> -S <output.sam>
+hisat2 -x arcto -1 SRR2083574_1.fastq -2 SRR2083574_2.fastq -S arcto-alignment.bam
 ```
 
 Convert .sam to .bam
@@ -60,14 +58,32 @@ samtools view -bS -o arcto-alignment.bam arcto_alignment.sam #convert .sam to .b
 samtools sort arcto-alignment.bam > arcto-sorted.bam #sort .bam
 ```
 
-BRAKER has a lot of dependencies, including AUGUSTUS, which also has many dependencies. This makes it a pain to install manually. Because of licensing issues, there isn't an active conda environment kept for BRAKER. Instead, they setup a singularity/apptainer to run BRAKER. If you have singularity/apptainer on your HPC (we do), setup BRAKER as follows:
+BRAKER has a lot of dependencies, including AUGUSTUS, which also has many dependencies. This makes it a pain to install manually. Also, because of licensing issues, there the conda environment for BRAKER is also difficult to configure. Instead, the authors set up a singularity/apptainer to run BRAKER. This process takes several hours, so instead, we'll have you just copy the singularity image to your directory.
+
+```
+cp /nobackup/archive/grp/fslg_nanopore/genomics_workshop_byu_may_24/braker3.sif .
+```
+
+This will place the braker3.sif file into your directory. For future reference, if you have singularity/apptainer on your HPC and want to set up BRAKER, you can use the following commands (don't do them for this workshop!):
 
 ```bash
 module load spack
 module load apptainer
-apptainer build braker3.sif docker://teambraker/braker3:latest # this downloads the .sif file which singularity/apptainer will need to run BRAKER
-export BRAKER_SIF=<file_path_to.sif_file>
+apptainer build braker3.sif docker://teambraker/braker3:latest # this builds the .sif file which singularity/apptainer will need to run BRAKER
 ```
+
+Once you have the `braker3.sif` file copied over, you can get the full path to it with:
+
+```
+realpath braker3.sif
+```
+
+Copy the path and set a new environmental variable with that path.
+
+```
+export BRAKER_SIF=<full_path_to.sif_file>
+```
+
 We need to download a config folder from AUGUSTUS to our own directory to make it writable for BRAKER. I already downloaded the config folder, you can copy it to your own directory: 
 
 ```bash
@@ -77,25 +93,54 @@ cp -r /grphome/fslg_nanopore/nobackup/archive/genomics_workshop_byu_may_24/confi
 Now we'll download three test files to confirm BRAKER is running correctly:
 
 ```bash
-apptainer exec -B $PWD:$PWD braker3.sif cp /opt/BRAKER/example/singularity-tests/test1.sh .
-apptainer exec -B $PWD:$PWD braker3.sif cp /opt/BRAKER/example/singularity-tests/test2.sh .
-apptainer exec -B $PWD:$PWD braker3.sif cp /opt/BRAKER/example/singularity-tests/test3.sh .
+apptainer exec --no-home -B $PWD:$PWD braker3.sif cp /opt/BRAKER/example/singularity-tests/test1.sh .
+apptainer exec --no-home -B $PWD:$PWD braker3.sif cp /opt/BRAKER/example/singularity-tests/test2.sh .
+apptainer exec --no-home -B $PWD:$PWD braker3.sif cp /opt/BRAKER/example/singularity-tests/test3.sh .
 ```
 
-Before we run the test files, we need to edit them with the location of the AUGUSTUS config file. To do this, add the below code to all three test files after braker.pl in the job files.
-```bash
---AUGUSTUS_CONFIG_PATH=<absolute_file_path_to_AUGUSTUS_config_directory>
+Before we run the test files, we need to edit them to add the value `--no-home` directive and set a value for the `AUGUSTUS_CONFIG_PATH`. Then open up `test1.sh` and modify the block of code so that it includes `--no-home` and sets the `AUGUSTUS_CONFIG_PATH`. It would look like (as long as you copied the `config` folder to your current working directory):
+
+```
+singularity exec --no-home -B ${PWD}:${PWD} ${BRAKER_SIF} braker.pl --AUGUSTUS_CONFIG_PATH=${PWD}/config --genome=/opt/BRAKER/example/genome.fa --bam=/opt/BRAKER/example/RNAseq.bam --workingdir=${wd} --GENEMARK_PATH=${ETP}/gmes --threads 8 --gm_max_intergenic 10000 --skipOptimize --busco_lineage eukaryota_odb10 &> test1.log
 ```
 
-Test the setup worked by running the test files:
+Similarly modify the `test2.sh` and `test3.sh` files.
+
+Next, we have to manually place the eukaryota_odb10 files into new `test1`, `test2`, and `test3` directories. This is because, otherwise, `braker3` will automatically attempt to download them and will throw an error since the compute nodes are not connected to the internet. You can do that with the following:
+
+```
+cp -r /grphome/fslg_nanopore/nobackup/archive/genomics_workshop_byu_may_24/mb_downloads .
+mkdir test1
+mkdir test2
+mkdir test3
+cp -r mb_downloads test1
+cp -r mb_downloads test2
+cp -r mb_downloads test3
+```
+
+Then we can test whether the setup worked by running a job that runs the test files. Navigate to the [Job Script Generator](https://rc.byu.edu/documentation/slurm/script-generator) and create a new job script with 8 processor cores, 10 GB of RAM and 2 hour wall time. Copy and paste the scrip into a new job file called `braker3_test.job`. Add the following to the bottom of your job file:
 
 ```bash
+module load spack
+module load apptainer
+export BRAKER_SIF=${PWD}/braker3.sif
 bash test1.sh
 bash test2.sh
 bash test3.sh
 ```
 
-Now we can run BRAKER3 on our data! Create a new job script like the one below to run BRAKER. 
+Now, go ahead and inspect the output. You can view the logs and also look in the directories for each test file.
+
+If that worked, we can now run BRAKER3 on our data! 
+
+First, make a new directory and copy over the orthoDB gene set:
+
+```
+mkdir arcto_grandis_annot
+cp -r mb_downloads arcto_grandis_annot
+```
+
+Create a new job script like the one below to run BRAKER. 
 
 
 ```bash
@@ -103,7 +148,6 @@ nano braker.job
 ```
 
 ```bash
-
 #!/bin/bash
 
 #SBATCH --time=72:00:00   # walltime
@@ -121,30 +165,29 @@ module load spack
 module load apptainer
 
 # Get the SIF file into the path
-export BRAKER_SIF=<file_path_to.sif_file>
-export AUGUSTUS_CONFIG_PATH=<absolute_file_path_to_AUGUSTUS_config_file>
-
+export BRAKER_SIF=${PWD}/braker3.sif
+export AUGUSTUS_CONFIG_PATH=${PWD}/config
 # Run singularity/apptainer
-apptainer exec braker3.sif braker.pl \
---genome=data/arcto-renamed.fasta \
---bam=data/arcto-sorted.bam \
---prot_seq=data/Arthropoda.fa \
---workingdir=arcto-grandis \
+apptainer exec --no-home -B $PWD:$PWD braker3.sif braker.pl \
+--genome=arcto_4_HiC_chrom.softmasked.fasta \
+--bam=arcto-sorted.bam \
+--prot_seq=Arthropoda.fa \
+--workingdir=arcto_grandis_annot \
 --gff3 \
 --threads=$SLURM_NTASKS \
 --species=Arctopsyche-grandis \
---AUGUSTUS_CONFIG_PATH=<absolute_file_path_to_AUGUSTUS_config_directory>
-
+--AUGUSTUS_CONFIG_PATH=${PWD}/config \
+--busco_lineage insecta_odb10
 ```
 
 It's important to understand what each of the above lines is doing. 
---genome references the softmasked reference genome is
---bam references the .bam RNASeq file mapped to your genome
---prot_seq is the protein database downloaded from OrthoDB
---workingdir specifies the working directory all files will be saved into - change this each time you run BRAKER so data isn't overwritten
---gff3 requests output to be in gff3 format
---species is a unique species identifier
---AUGUSTUS_CONFIG_PATH is the file path to the config directory downloaded above
+`--genome` references the softmasked reference genome 
+`--bam` references the .bam RNASeq file mapped to your genome
+`--prot_seq` is the protein database downloaded from OrthoDB
+`--workingdir` specifies the working directory all files will be saved into - change this each time you run BRAKER so data isn't overwritten
+`--gff3` requests output to be in gff3 format
+`--species` is a unique species identifier
+`--AUGUSTUS_CONFIG_PATH` is the file path to the config directory that we copied above
 
 ## Examining the output:
 
