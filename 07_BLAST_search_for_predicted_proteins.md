@@ -46,7 +46,7 @@ wc -l sequence_list.txt
 
 For _Arctopsyche_ it should be 246. Take note of your number if it is different so that you can put it into the job script.
 
-Now, we're going to make a new job script that will run a `SLURM` array. This is a way to run the same job across multiple files. Here is an example of the job file for _Arctopsyche_.
+Now, we're going to make a new job script that will run a `SLURM` array. This is a way to run the same job across multiple files. Here is an example of the job file for _Arctopsyche_ that I pasted into `arcto_blast.job`.
 
 ```
 #!/bin/bash
@@ -71,3 +71,9 @@ blastp -query ${P} -db /apps/blast/databases/nr -outfmt 5 -max_target_seqs 10 -e
 ```
 
 It will output all of the `BLAST` results into xml files in the `xml` folder. You can then use these downstream for input into `BLAST2GO`.
+
+Go ahead and start the array with:
+
+```
+sbatch arcto_blast.job
+```
