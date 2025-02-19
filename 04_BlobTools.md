@@ -92,7 +92,7 @@ Copy the script below into the file. Make sure to edit it to include your own em
 #SBATCH --time=15:00:00   # walltime
 #SBATCH --ntasks=20   # number of processor cores (i.e. tasks)
 #SBATCH --nodes=1   # number of nodes
-#SBATCH --mem-per-cpu=20144M   # memory per CPU core
+#SBATCH --mem-per-cpu=5144M   # memory per CPU core
 #SBATCH -J "BlobTools minimap2"   # job name
 #SBATCH --mail-user=<youremail@email.com>   # email address
 #SBATCH --mail-type=BEGIN

@@ -60,7 +60,37 @@ samtools view -bS -o arcto-alignment.bam arcto_alignment.sam #convert .sam to .b
 samtools sort arcto-alignment.bam > arcto-sorted.bam #sort .bam
 ```
 
-###Running BRAKER3
+To run this in a job, it would look something like:
+
+```
+#!/bin/bash
+
+#SBATCH --time=4:00:00   # walltime
+#SBATCH --ntasks=1   # number of processor cores (i.e. tasks)
+#SBATCH --nodes=1   # number of nodes
+#SBATCH --mem-per-cpu=12240M   # memory per CPU core
+#SBATCH -J "hisat"   # job name
+#SBATCH --mail-user=<your_email@email.com>   # email address
+#SBATCH --mail-type=BEGIN
+#SBATCH --mail-type=END
+#SBATCH --mail-type=FAIL
+
+
+# Set the max number of threads to use for programs using OpenMP. Should be <= ppn. Does nothing if the program doesn't use OpenMP.
+export OMP_NUM_THREADS=$SLURM_CPUS_ON_NODE
+
+# LOAD MODULES, INSERT CODE, AND RUN YOUR PROGRAMS HERE
+source /grphome/fslg_pws472/.bashrc
+conda activate hisat2
+hisat2-build arcto_4_HiC_chrom.softmasked.fasta arcto
+hisat2 -x arcto -1 SRR2083574_1.fastq -2 SRR2083574_2.fastq -S arcto-alignment.sam
+conda deactivate
+conda activate samtools
+samtools view -bS -o arcto-alignment.bam arcto-alignment.sam
+samtools sort arcto-alignment.bam > arcto-sorted.bam
+```
+
+### Running BRAKER3
 BRAKER has many dependencies, including AUGUSTUS, which also has many dependencies. This makes it a pain to install manually. Also, because of licensing issues, the conda environment for BRAKER is also difficult to configure (and not officially supported by the developers). Instead, the developers set up a singularity/apptainer to run BRAKER. This process takes several hours, so instead, we'll have you just copy the singularity image to your directory.
 
 ```
